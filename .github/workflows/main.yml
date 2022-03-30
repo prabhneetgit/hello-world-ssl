@@ -91,4 +91,4 @@ jobs:
          -Danypoint.clientId="dd8e29257c5a45e6adc61fa1691333ba" \
          -Danypoint.clientSecret="6E9f49877b674ba79244aCD2Bec1986c" \
          -DsecureKey="mule" \
-         -DskipTests# This workflow will build a MuleSoft project and deploy to CloudHub
+         -DskipTests
