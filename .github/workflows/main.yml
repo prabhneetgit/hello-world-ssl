@@ -79,6 +79,16 @@ jobs:
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
          -Dmule.artifact=$artifactName \
-         -Danypoint.username="$USERNAME" \
-         -Danypoint.password="$PASSWORD" \
+         -Ddevops.username="$USERNAME" \
+         -Ddevops.password="$PASSWORD" \
+         -DapplicationName="hello-world-ssl-dev" \
+         -Dplatform.environment="Sandbox" \
+         -Dworker.count="1" \
+         -Dworker.type="MICRO" \
+         -Dregion="ca-central-1" \
+         -Danypoint.orgid="0d9dd882-d0a4-4003-a065-7ab909813e90" \
+         -Dmule.env="Sandbox" \
+         -Danypoint.clientId="dd8e29257c5a45e6adc61fa1691333ba" \
+         -Danypoint.clientSecret="6E9f49877b674ba79244aCD2Bec1986c" \
+         -DsecureKey="mule" \
          -DskipTests# This workflow will build a MuleSoft project and deploy to CloudHub
