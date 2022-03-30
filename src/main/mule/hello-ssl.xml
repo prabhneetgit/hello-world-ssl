@@ -17,7 +17,6 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	<http:request-config name="HTTPS_Request_configuration" doc:name="HTTP Request configuration" doc:id="6be9da5c-aaa3-4e22-b8e0-560771f2f8f5" basePath="/en/api/recipe" >
 		<http:request-connection protocol="HTTPS" host="www.sobeys.com" port="443" />
 	</http:request-config>
-	<api-gateway:autodiscovery apiId="17646588" doc:name="API Autodiscovery" doc:id="2c0e6727-0a00-4551-b055-5dbdd3d37734" flowRef="hello-sslFlow" ignoreBasePath="true"/>
 	<flow name="hello-sslFlow" doc:id="d3c799be-3c7e-4633-ba6d-8ffaa90a3474" >
 		<http:listener doc:name="Listener" doc:id="43b23764-eaa0-4d87-b950-fa4826afc945" config-ref="HTTP_Listener_config" path="/recipe?cultureName={cultureName}&amp;id={id}" />
 		<logger level="INFO" doc:name="Logger" doc:id="12260b5e-62c0-4d05-a6ff-b07c62d58904" message='"Received Request on 8082 SSL-Logger"' category="com.test.logger"/>
