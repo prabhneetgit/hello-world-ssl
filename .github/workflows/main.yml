@@ -1,0 +1,76 @@
+
+# This workflow will build and deploy a MuleSoft project
+name: MuleSoft deployment with GitHub Actions CI
+
+# Controls when the action will run.
+on:
+    # Triggers the workflow on push or pull request events on dev branch
+    push:
+      branches: [ dev ]
+    pull_request:
+      branches: [ dev ]
+
+# Allows you to run this workflow manually from the Actions tab workflow_dispatch:
+
+# A workflow run is made up of one or more jobs
+jobs:
+    # “build”
+    build:
+    # The type of runner that the job will run on
+        runs-on: ubuntu-latest
+
+        # Steps represent a sequence of tasks that will be executed as part of the job
+        steps:
+
+        # Checks-out your repository
+        – uses: actions/checkout@v2
+        – uses: actions/cache@v1
+        with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles(‘**/pom.xml’) }}
+        restore-keys: |
+            ${{ runner.os }}-maven-
+        – name: Set up JDK 1.8
+            uses: actions/setup-java@v1
+        with:
+        java-version: 1.8
+
+        – name : build
+          run: mvn -B package –file pom.xml
+
+        – name: Artifact file name with commit hash
+          run: |
+            artifactName1=$(ls target/*.jar | head -1)
+            commitHash=$(git rev-parse –short “$GITHUB_SHA”)
+            artifactName2=$(ls target/*.jar | head -1 | sed “s/.jar/.$commitHash.jar/g”)
+            mv $artifactName1 $artifactName2
+
+        – uses: actions/upload-artifact@master
+        with:
+        name: artifacts
+        path: target/*.jar
+
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+        – uses: actions/checkout@v2
+        – uses: actions/cache@v1
+
+        with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles(‘**/pom.xml’) }}
+        restore-keys: |
+            ${{ runner.os }}-maven-
+        – uses: actions/download-artifact@master
+        with:
+        name: artifacts
+
+        – name: Deploy to Anypoint Platform
+        env:
+            USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
+            PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+        run: |
+            artifactName=$(ls *.jar | head -1)
+            mvn mule:deploy -Dmule.artifact=$artifactName -Dusername=$USERNAME -Dpassword=$PASSWORD
