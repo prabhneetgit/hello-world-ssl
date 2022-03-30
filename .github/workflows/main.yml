@@ -4,9 +4,9 @@ name: Build and Deploy to Sandbox
 
 on:
   push:
-    branches: [ main,master,dev ]
+    branches: [ main,master,develop ]
   pull_request:
-    branches: [ main,master,dev ]
+    branches: [ main,master,develop ]
   workflow_dispatch:
     
 jobs:
@@ -91,5 +91,5 @@ jobs:
          -Danypoint.clientId="dd8e29257c5a45e6adc61fa1691333ba" \
          -Danypoint.clientSecret="6E9f49877b674ba79244aCD2Bec1986c" \
          -DsecureKey="mule" \
-         -DmuleVersion="4.3" \
+         -Dapp.runtime="4.3" \
          -DskipTests
