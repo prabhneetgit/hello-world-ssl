@@ -1,0 +1,4 @@
+{
+	"transaction_1234567101" : "{ \"transactionId\": \"1618514804-72d8d141-6b5e-47bf-87fd-daf569512101\", \"success\": true, \"guid\": \"90e67883-9ba8-47bb-8bdd-c086088b2101\", \"orderRefNo\": \"1234567101\", \"pointsBalance\": \"7500\", }",
+	"validation_1234567101" : "{ \"messageCode\": 20005, \"guid\": \"12345678909876101\", \"accountStatus\": \"Active\", \"pointsBalance\": \"10000\" }"
+}

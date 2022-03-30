@@ -1,0 +1,51 @@
+jobs:
+- job: ArtifactBuild
+
+  pool:
+    vmImage: ubuntu-latest
+    name: Azure Pipelines
+    demands: maven
+
+  variables:
+    MAVEN_CACHE_FOLDER: '$(Pipeline.Workspace)/.m2/repository'
+    MAVEN_CACHE_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)' 
+
+  steps:
+  - task: DownloadSecureFile@1
+    displayName: 'Download secure file'
+    inputs:
+      secureFile: settings.xml
+
+  - task: Cache@2
+    displayName: Cache
+    inputs:
+      key: 'maven | "$(Agent.OS)" | **/pom.xml'
+      path: '$(MAVEN_CACHE_FOLDER)'
+      cacheHitVar: CacheRestored
+      restoreKeys: |
+        maven | "$(Agent.OS)"
+        maven
+
+  - task: Maven@3
+    displayName: 'Package and Run tests'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'clean package'
+      options: '-s $(Agent.TempDirectory)/settings.xml $(MAVEN_CACHE_OPTS)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy JAR File to artifact staging directory'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: '**/target/*.?(war|jar)'
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: CopyFiles@2
+    displayName: 'Copy POM File to artifact staging directory'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: 'pom.xml'
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+
+  - upload: $(Build.ArtifactStagingDirectory)
+    artifact: drop

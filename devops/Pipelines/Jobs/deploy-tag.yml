@@ -1,0 +1,47 @@
+parameters:
+  poolImage: ""
+  environmentName: ""
+  version: ""
+
+jobs:
+  - deployment: ArtifactDeploy
+    pool:
+      vmImage: ${{ parameters.poolImage }}
+    environment: ${{ parameters.environmentName }}
+    variables:
+      - group: MuleSoft-${{ parameters.environmentName }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - bash: echo  Target Env is ${{ parameters.environmentName }} and Artifact path 
+          - task: DownloadSecureFile@1
+            displayName: 'Download secure file'
+            inputs:
+              secureFile: settings.xml
+          - task: PowerShell@2
+            name: GetArtifactRelativePath
+            inputs:
+              targetType: 'inline'
+              script: |
+                $jarfilename= Get-ChildItem -Path $(Pipeline.Workspace)/drop/target/*.jar -name
+                Get-ChildItem -Path $(Pipeline.Workspace)/drop/target/*.jar -name
+                Write-Host "The mule jar under artifact directory : $jarfileName"
+                Write-Host "##vso[task.setvariable variable=artifactRelativeName;isOutput=true]$(Pipeline.Workspace)/drop/target/$jarfilename"
+                Write-Host "Set Variable artifactRelativeName complete"      
+
+          - powershell: |
+              Write-Host "The value of the artifactRelativeName from the last powershell execution : $(GetArtifactRelativePath.artifactRelativeName)"
+            env:
+                mypath: $(Pipeline.Workspace)
+
+          - task: Maven@3
+            displayName: 'Maven Deploy'
+            inputs:
+              mavenPomFile: '$(Pipeline.Workspace)/drop/pom.xml' 
+              goals: 'mule:deploy -DskipTests -e -X'
+              options: '-s $(Agent.TempDirectory)/settings.xml -Dmule.artifact=$(GetArtifactRelativePath.artifactRelativeName) -Ddevops.username=$(mulesoft_svc_account_username) -Ddevops.password="$(mulesoft_svc_account_password)" -Danypoint.environment="$(anypoint_platform_env)" -Dmule.env="$(properties_env)" -DsecureKey="$(encryption_key)" -Dworkers=$(default_worker_count) -Dworker.type="$(default_worker_type)" -Dregion=$(default_worker_region)  -Danypoint.clientId=$(anypoint_platform_client_id) -Danypoint.clientSecret=$(anypoint_platform_client_secret) -Danypoint.orgid="$(anypoint_platform_org_id)" -Dapp.runtime="$(default_mule_runtime)" -Dsobeys.logger.api.url="$(sobeys.logger.api.url)" -Danypoint.bg.name="$(anypoint.bg.name)" -Dauth.client.id="$(auth.client.id)" -Dauth.client.secret="$(auth.client.secret)" -DapplicationName="$(applicationName)" -Dazure.password="$(azure.password)"'
+              
+          
+                
+

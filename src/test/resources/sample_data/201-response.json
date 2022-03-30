@@ -1,0 +1,73 @@
+{
+    "recipe": {
+        "preparationSteps": "<ol><li>Whisk oil with lemon zest and juice, salt and pepper. Toss with mushrooms and sliced celery. </li><li>Transfer to serving platter. Garnish with celery leaves and Parmesan. </li></ol>",
+        "nutritionDescription": "Per serving (1/4 of the recipe):",
+        "calories": "180",
+        "fat": "16",
+        "saturatedFat": "3",
+        "carbs": "5",
+        "sugar": "1",
+        "protein": "5",
+        "cholesterol": "5",
+        "fibre": "1",
+        "sodium": "330",
+        "potassium": "0",
+        "ingredients": [
+            {
+                "description": "olive oil",
+                "quantity": "¼",
+                "quantityMet": "60 mL"
+            },
+            {
+                "description": "lemon zest ",
+                "quantity": "½ ",
+                "quantityMet": "2 mL"
+            },
+            {
+                "description": "lemon juice",
+                "quantity": "3",
+                "quantityMet": "45 mL"
+            },
+            {
+                "description": "each salt and pepper ",
+                "quantity": "¼",
+                "quantityMet": "1 mL"
+            },
+            {
+                "description": "mushrooms, thinly sliced",
+                "quantity": "½ ",
+                "quantityMet": "250 g"
+            },
+            {
+                "description": "celery stalks, thinly sliced (leaves reserved)",
+                "quantity": "4",
+                "quantityMet": ""
+            },
+            {
+                "description": "shaved Parmesan cheese (about 1 oz/30 g)",
+                "quantity": "½ ",
+                "quantityMet": "125 mL"
+            }
+        ],
+        "imageUrl": "https://www.sobeys.com/wp-content/uploads/2020/05/Mushroom_Celery_Parm_Salad_0956.png",
+        "displayName": "Mushroom, Celery & Parmesan Salad",
+        "recipeUrl": "https://www.sobeys.com/en/recipes/mushroom-celery-parmesan-salad/",
+        "id": "55680",
+        "prepTime": "10",
+        "totalTime": "15",
+        "serves": "Serves: 4",
+        "tips": [
+            {
+                "tip": "Use a mandoline slicer for even mushrooms and celery slices. Use a vegetable peeler for shaving Parmesan cheese from a wedge. "
+            }
+        ],
+        "tags": [
+            "30 Minutes or Less",
+            "Every Day",
+            "Lactose Free",
+            "Nut Free",
+            "Salad",
+            "Vegetarian"
+        ]
+    }
+}

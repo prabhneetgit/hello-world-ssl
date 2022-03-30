@@ -1,0 +1,74 @@
+trigger:
+  branches:
+   include:
+    - refs/tags/RL*
+
+variables:
+  buildPool: ubuntu-latest
+  deployPool: ubuntu-latest
+  isTagRelease: $[eq(variables['Build.SourceBranch'], 'refs/tags')]
+  
+parameters:
+- name: 'tagVersion'
+  type: string
+  default: "RL-1.0.0"
+
+stages:
+
+  - stage: CI
+    jobs:
+      - template: Pipelines/Jobs/build-tag.yml
+        parameters:
+          poolImage: $(deployPool)
+          tagName: ${{parameters.tagVersion}}
+          
+  - stage: TAG_VERSION
+    dependsOn: [CI]
+    jobs:
+      - job: Tag
+        steps:
+          - script: |
+              # Bash script
+              BRANCH_NAME=$(echo "$(Build.SourceBranch)" | awk -F/ '{print $NF}')
+              echo "##vso[task.setvariable variable=Tag_Branch;isOutput=true]$BRANCH_NAME"
+            displayName: Tag a Release version
+            name: version
+            
+  - stage: STG
+    variables:
+      group: MuleSoft-STG
+    dependsOn: [TAG_VERSION]
+#    condition: eq(${{ parameters.tagVersion }}, dependencies.TAG_VERSION.outputs['Tag.version.Tag_Branch'])
+    jobs:
+#      - job: Tag
+#        steps:
+#        - task: PowerShell@2
+#          name: Version
+#          displayName: 'Mapping the tag version'
+#          inputs:
+#            targetType: 'inline'
+#            script: |
+#                echo "##vso[task.setvariable variable=tagversion;isOutput=true]${{parameters.tagVersion}}"
+#        - task: PowerShell@2
+#          displayName: 'Check Tag Version'
+#          inputs:
+#            targetType: 'inline'
+#            script: |
+#              Write-Host "$env:RELEASE_TAG_VERSION"
+#          env:
+#            RELEASE_TAG_VERSION: $(Version.tagversion)
+      - template: Pipelines/Jobs/deploy-tag.yml
+        parameters:
+          poolImage: $(deployPool)
+          environmentName: STG
+          tagName: ${{parameters.tagVersion}}
+
+  - stage: PROD
+    variables:
+      group: MuleSoft-PROD  
+    dependsOn: [STG]
+    jobs:
+      - template: Pipelines/Jobs/deploy.yml
+        parameters:
+          poolImage: $(deployPool)
+          environmentName: PROD

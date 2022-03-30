@@ -1,0 +1,68 @@
+trigger:
+  branches:
+   include:
+    - develop
+    - release
+    - master
+
+
+variables:
+  buildPool: ubuntu-latest
+  deployPool: ubuntu-latest
+  isMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  isRelease: $[or(eq(variables['Build.SourceBranch'], 'refs/tags/RL*'), eq(variables['Build.SourceBranch'], 'refs/heads/release'))]
+  isDevelop: $[eq(variables['Build.SourceBranch'], 'refs/heads/develop')]
+  
+stages:
+
+  - stage: CI
+    jobs:
+      - template: Pipelines/Jobs/build.yml
+  - stage: DEV
+    variables:
+      group: MuleSoft-DEV
+    dependsOn: [CI]
+    condition: and(succeeded(), eq(variables.isDevelop, true))
+    jobs:
+      - job: Tag
+        steps:
+        - task: git-tag-on-release-task@9
+          displayName: "Add Tag to Repo"
+          inputs:
+            staticTagName: "RL-$(Build.BuildNumber)"
+      - template: Pipelines/Jobs/deploy.yml
+        parameters:
+          poolImage: $(deployPool)
+          environmentName: DEV
+
+  - stage: QA
+    variables:
+      group: MuleSoft-QA
+    dependsOn: [CI]
+    condition: and(succeeded(), eq(variables.isRelease, true))
+    jobs:
+      - template: Pipelines/Jobs/deploy.yml
+        parameters:
+          poolImage: $(deployPool)
+          environmentName: QA
+        
+  - stage: STG
+    variables:
+      group: MuleSoft-STG
+    dependsOn: [CI]
+    condition: and(succeeded(), eq(variables.isMaster, true))
+    jobs:
+      - template: Pipelines/Jobs/deploy.yml
+        parameters:
+          poolImage: $(deployPool)
+          environmentName: STG
+
+  - stage: PROD
+    variables:
+      group: MuleSoft-PROD  
+    dependsOn: [STG]
+    jobs:
+      - template: Pipelines/Jobs/deploy.yml
+        parameters:
+          poolImage: $(deployPool)
+          environmentName: PROD

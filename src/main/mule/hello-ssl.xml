@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8b7fc6e2-2c47-4896-ba6f-95dfa3bdabe7">
+		<http:listener-connection protocol="HTTPS" host="0.0.0.0" usePersistentConnections="false" port="8082">
+			<tls:context >
+				<tls:key-store type="jks" path="mykeystore.jks" keyPassword="testpwd" password="testpwd" />
+			</tls:context>
+		</http:listener-connection>
+	</http:listener-config>
+	<http:request-config name="HTTPS_Request_configuration" doc:name="HTTP Request configuration" doc:id="6be9da5c-aaa3-4e22-b8e0-560771f2f8f5" basePath="/en/api/recipe" >
+		<http:request-connection protocol="HTTPS" host="www.sobeys.com" port="443" />
+	</http:request-config>
+	<api-gateway:autodiscovery apiId="17646588" doc:name="API Autodiscovery" doc:id="2c0e6727-0a00-4551-b055-5dbdd3d37734" flowRef="hello-sslFlow" ignoreBasePath="true"/>
+	<flow name="hello-sslFlow" doc:id="d3c799be-3c7e-4633-ba6d-8ffaa90a3474" >
+		<http:listener doc:name="Listener" doc:id="43b23764-eaa0-4d87-b950-fa4826afc945" config-ref="HTTP_Listener_config" path="/recipe?cultureName={cultureName}&amp;id={id}" />
+		<logger level="INFO" doc:name="Logger" doc:id="12260b5e-62c0-4d05-a6ff-b07c62d58904" message='"Received Request on 8082 SSL-Logger"' category="com.test.logger"/>
+		<http:request method="GET" doc:name="Request" doc:id="53339313-c9d6-4b2b-aedf-f82cf4010dd7" config-ref="HTTPS_Request_configuration" path="/getRecipeById/">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"cultureName" : attributes.queryParams.cultureName,
+	"id" : attributes.queryParams.id
+}]]]></http:query-params>
+		</http:request>
+		<ee:transform doc:name="Transform Message" doc:id="ace8cce6-3f75-47c4-aefd-6efd3ecd0be5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="5cea917c-1641-4ec2-bb8e-d6441c537647" message="#[payload]" category="com.test.logger"/>
+	
+</flow>
+	<flow name="hello-sslFlow2" doc:id="5eece430-2892-4b9e-a04d-7d2818ea282b" >
+		<http:listener doc:name="Listener" doc:id="800e624d-eb4a-4626-b874-09febe11810c" config-ref="HTTP_Listener_config" path="/transaction"/>
+		<logger level="INFO" doc:name="Logger" doc:id="0edab970-d754-4c4c-b5a5-30d28ed346b6" message="#[attributes.listenerPath]" category="com.test.logger"/>
+		<set-variable value='#["transaction_" ++ payload.cardNumber]' doc:name="Set Variable" doc:id="905c00fa-04dc-42ef-9882-f234539e8629" variableName="mock-key"/>
+		<ee:transform doc:name="Transform Message" doc:id="27e0611f-907b-47d7-9427-989918da8f51" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+var mockData =  readUrl("classpath://mock_data.json", "application/json")
+---
+mockData[trim(vars.'mock-key' default "")]]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="ab3195d5-108e-4e8d-9931-d4632567c84e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+//read(payload, 'application/java') replace /\[|\]|[\\]|\&# 34;/ with "" splitBy "}"
+write(payload, 'application/java')]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="2a4ded96-2d55-4e25-9d6c-2634c20be517" message="#[payload]" category="com.test.logger"/>
+	</flow>
+
+</mule>

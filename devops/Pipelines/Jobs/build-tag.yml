@@ -1,0 +1,172 @@
+jobs:
+- job: ArtifactBuild
+
+  pool:
+    vmImage: ubuntu-latest
+    name: Azure Pipelines
+    demands: maven
+
+  variables:
+    MAVEN_CACHE_FOLDER: '$(Pipeline.Workspace)/.m2/repository'
+    MAVEN_CACHE_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+  
+
+
+  steps:
+  
+  - checkout: self
+  
+  - task: DownloadSecureFile@1
+    displayName: 'Download secure file'
+    inputs:
+      secureFile: settings.xml
+
+  - task: Cache@2
+    displayName: Cache
+    inputs:
+      key: 'maven | "$(Agent.OS)" | **/pom.xml'
+      path: '$(MAVEN_CACHE_FOLDER)'
+      cacheHitVar: CacheRestored
+      restoreKeys: |
+        maven | "$(Agent.OS)"
+        maven
+
+  - powershell: |
+        Write-Host "Tagging Build: ${{ parameters.tagName }}"
+        
+ 
+  - task: XplatGenerateReleaseNotes@3
+    displayName: 'Release Notes'
+    inputs:
+      outputfile: '$(System.DefaultWorkingDirectory)/inline.md'
+      templateLocation: 'InLine'
+      inlinetemplate: |
+        # Notes for build 
+                      **Build Number**: {{buildDetails.id}}
+                      **Tag**: ${{ parameters.tagName }}
+                      **Build Trigger PR Number**: {{lookup buildDetails.triggerInfo 'pr.number'}} 
+        
+                      # Associated Pull Requests ({{pullRequests.length}})
+                      {{#forEach pullRequests}}
+                      {{#if isFirst}}### Associated Pull Requests (only shown if  PR) {{/if}}
+                      *  **PR {{this.id}}**  {{this.title}}
+                      {{/forEach}}
+        
+                      # Builds with associated WI/CS ({{builds.length}})
+                      {{#forEach builds}}
+                      {{#if isFirst}}## Builds {{/if}}
+                      ##  Build {{this.build.buildNumber}}
+                      {{#forEach this.commits}}
+                      {{#if isFirst}}### Commits {{/if}}
+                      - CS {{this.id}}
+                      {{/forEach}}
+                      {{#forEach this.workitems}}
+                      {{#if isFirst}}### Workitems {{/if}}
+                      - WI {{this.id}}
+                      {{/forEach}} 
+                      {{/forEach}}
+        
+                      # Global list of WI ({{workItems.length}})
+                      {{#forEach workItems}}
+                      {{#if isFirst}}## Associated Work Items (only shown if  WI) {{/if}}
+                      *  **{{this.id}}**  {{lookup this.fields 'System.Title'}}
+                        - **WIT** {{lookup this.fields 'System.WorkItemType'}} 
+                        - **Tags** {{lookup this.fields 'System.Tags'}}
+                      {{/forEach}}
+        
+                      {{#forEach commits}}
+                      {{#if isFirst}}### Associated commits{{/if}}
+                      * ** ID{{this.id}}** 
+                        -  **Message:** {{this.message}}
+                        -  **Commited by:** {{this.author.displayName}} 
+                        -  **FileCount:** {{this.changes.length}} 
+                      {{#forEach this.changes}}
+                            -  **File path (TFVC or TfsGit):** {{this.item.path}}  
+                            #-  **File filename (GitHub):** {{this.filename}}  
+                      {{/forEach}}
+                      {{/forEach}}
+      dumpPayloadToConsole: false
+      dumpPayloadToFile: false
+      replaceFile: true
+      getParentsAndChildren: False
+      getAllParents: False
+      getIndirectPullRequests: False
+      stopOnError: False
+      considerPartiallySuccessfulReleases: False
+      checkForManuallyLinkedWI: False
+      
+#  - script: |
+#        git status
+#        #git checkout ${{ parameters.tagName }}
+#        #cp $(Build.SourcesDirectory)/inline.md .
+#        git add .
+#        git commit -m "Updating release notes for ${{ parameters.tagName }}"
+#        git push origin ${{ parameters.tagName }}
+#        # Bash script
+#        BRANCH_NAME=$(echo "$(Build.SourceBranch)" | awk -F/ '{print $NF}')
+#        echo "##vso[task.setvariable variable=Tag_Branch;]$BRANCH_NAME"
+#    displayName: Script to checkout tag
+#      
+#  - task: richardfennellBM.BM-VSTS-WIKIUpdater-Tasks.WikiUpdaterTask.WikiUpdaterTask@1
+#    displayName: 'Git based WIKI Updater'
+#    inputs:
+#      repo: 'https://dev.azure.com/prabhneetarora88/Mulesoft-System/_git/hello-world-ssl'
+#      filename: 'README.md'
+#      dataIsFile: true
+#      sourceFile: '$(Build.SourcesDirectory)\inline.md'
+#      message: 'Update from Build'
+#      gitname: prabhneetarora88
+#      gitemail: 'build@demo'
+#      useAgentToken: true
+
+  - task: Npm@1
+    displayName: 'CHANGELOG.md'
+    inputs:
+      command: 'custom'
+      workingDir: '$(System.DefaultWorkingDirectory)/devops/changelog/package.json'
+      customCommand: 'npm $(System.DefaultWorkingDirectory)/devops/changelog/changelog-generator.js'
+            
+  - powershell: |
+        git status
+        echo "$(Build.SourceBranch)"
+        ls $(Build.SourcesDirectory) *
+        ls $(System.DefaultWorkingDirectory) *
+        #git checkout ${{ parameters.tagName }}
+        git config --global user.email "prabhneetarora88@outlook.com"
+        git config --global user.name "prabhneet"
+         
+        $MyPat = "$(system.accesstoken)"
+        $B64Pat = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes(":$MyPat"))
+        #cp $(Build.SourcesDirectory)/inline.md .
+        git add .
+        git commit -m "Updating release notes for ${{ parameters.tagName }}"
+        #git push origin HEAD:${{ parameters.tagName }}
+        git push https://${MyPAT}@dev.azure.com/prabhneetarora88/Mulesoft-System/_git/hello-world-ssl HEAD:${{ parameters.tagName }} -f
+        # Bash script
+        #BRANCH_NAME=$(echo "$(Build.SourceBranch)" | awk -F/ '{print $NF}')
+        #echo "##vso[task.setvariable variable=Tag_Branch;]$BRANCH_NAME"
+    displayName: Script to checkout tag
+  
+  - task: Maven@3
+    displayName: 'Package and Run tests'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'clean package'
+      options: '-s $(Agent.TempDirectory)/settings.xml $(MAVEN_CACHE_OPTS)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy JAR File to artifact staging directory'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: '**/target/*.?(war|jar)'
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+
+  - task: CopyFiles@2
+    displayName: 'Copy POM File to artifact staging directory'
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)'
+      Contents: 'pom.xml'
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+
+  - upload: $(Build.ArtifactStagingDirectory)
+    artifact: drop
