@@ -78,7 +78,7 @@ jobs:
         SLACK_USERNAME: rtCamp
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   
-  deploy:
+  deploy-dev:
     needs: [ build,notifySlack,slackAction ]
     runs-on: ubuntu-latest
     env:
@@ -121,3 +121,56 @@ jobs:
          -DsecureKey="mule" \
          -Dapp.runtime="4.3.0" \
          -DskipTests
+         
+  deploy-production:
+    needs: deploy-dev
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: Production
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v2.1.5
+        with:
+    # A list of files, directories, and wildcard patterns to cache and restore
+          path: /home/runner/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+              ${{ runner.os }}-maven-
+      - name: Setup Java JDK
+        uses: actions/setup-java@v1
+        with:
+    # The Java version to set up. Takes a whole or semver Java version. See examples of supported syntax in README file
+          java-version: 1.8   
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v2.0.9
+        with:
+        # Artifact name
+          name: build_artifact
+          
+      - name: Deploy to Anypoint Platform
+        env:
+          USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
+          PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+          
+        run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy -DmuleDeploy \
+           -Dmule.artifact=$artifactName \
+           -Ddevops.username="$USERNAME" \
+           -Ddevops.password="$PASSWORD" \
+           -DapplicationName="hello-world-ssl-design" \
+           -Dplatform.environment="Design" \
+           -Dworker.count="1" \
+           -Dworker.type="MICRO" \
+           -Dregion="ca-central-1" \
+           -Danypoint.orgid="0d9dd882-d0a4-4003-a065-7ab909813e90" \
+           -Dmule.env="Sandbox" \
+           -Danypoint.clientId="60d98fcc29ea44e3b9d5214449e5073e" \
+           -Danypoint.clientSecret="e2021890e164486aAbA9852861CaB912" \
+           -DsecureKey="mule" \
+           -Dapp.runtime="4.3.0" \
+           -DskipTests
+ 
