@@ -148,7 +148,7 @@ jobs:
         uses: actions/download-artifact@master
         with:
         # Artifact name
-          name: build_artifact
+          name: artifacts
           
       - name: Deploy to Anypoint Platform
         env:
