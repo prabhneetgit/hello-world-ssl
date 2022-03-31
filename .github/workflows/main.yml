@@ -132,7 +132,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Cache
-        uses: actions/cache@v2.1.5
+        uses: actions/cache@v1
         with:
     # A list of files, directories, and wildcard patterns to cache and restore
           path: /home/runner/.m2/repository
@@ -145,7 +145,7 @@ jobs:
     # The Java version to set up. Takes a whole or semver Java version. See examples of supported syntax in README file
           java-version: 1.8   
       - name: Download a Build Artifact
-        uses: actions/download-artifact@v2.0.9
+        uses: actions/download-artifact@master
         with:
         # Artifact name
           name: build_artifact
