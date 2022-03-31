@@ -105,7 +105,7 @@ jobs:
         USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
         PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        CLIENT_SECRET: ${{ secrets/CLIENT_SECRET }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
@@ -154,7 +154,7 @@ jobs:
           USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
           PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
           CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets/CLIENT_SECRET }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           
         run: |
           artifactName=$(ls *.jar | head -1)
