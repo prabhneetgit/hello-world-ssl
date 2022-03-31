@@ -79,10 +79,11 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   
   deploy-dev:
+    environment: Dev
     needs: [ build,notifySlack,slackAction ]
     runs-on: ubuntu-latest
-    env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+    #env:
+      #SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:    
     
@@ -103,6 +104,8 @@ jobs:
       env:
         USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
         PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets/CLIENT_SECRET }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
@@ -116,8 +119,8 @@ jobs:
          -Dregion="ca-central-1" \
          -Danypoint.orgid="0d9dd882-d0a4-4003-a065-7ab909813e90" \
          -Dmule.env="Sandbox" \
-         -Danypoint.clientId="dd8e29257c5a45e6adc61fa1691333ba" \
-         -Danypoint.clientSecret="6E9f49877b674ba79244aCD2Bec1986c" \
+         -Danypoint.clientId="$CLIENT_ID" \
+         -Danypoint.clientSecret="$CLIENT_SECRET" \
          -DsecureKey="mule" \
          -Dapp.runtime="4.3.0" \
          -DskipTests
@@ -126,7 +129,7 @@ jobs:
     needs: deploy-dev
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    #environment: Production
+    environment: Production
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -150,6 +153,8 @@ jobs:
         env:
           USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
           PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets/CLIENT_SECRET }}
           
         run: |
           artifactName=$(ls *.jar | head -1)
@@ -164,8 +169,8 @@ jobs:
            -Dregion="ca-central-1" \
            -Danypoint.orgid="0d9dd882-d0a4-4003-a065-7ab909813e90" \
            -Dmule.env="Test" \
-           -Danypoint.clientId="98cdb7b0083141a18ebce5a8898fe33d" \
-           -Danypoint.clientSecret="1AF02b3886904b49ae5E3531D573a9Ab" \
+           -Danypoint.clientId="$CLIENT_ID" \
+           -Danypoint.clientSecret="$CLIENT_SECRET" \
            -DsecureKey="mule" \
            -Dapp.runtime="4.3.0" \
            -DskipTests
