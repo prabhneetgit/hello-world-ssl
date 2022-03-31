@@ -161,7 +161,7 @@ jobs:
            -Dmule.artifact=$artifactName \
            -Ddevops.username="$USERNAME" \
            -Ddevops.password="$PASSWORD" \
-           -DapplicationName="hello-world-ssl-design" \
+           -DapplicationName="hello-world-ssl-DSG" \
            -Dplatform.environment="Design" \
            -Dworker.count="1" \
            -Dworker.type="MICRO" \
