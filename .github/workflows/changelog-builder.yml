@@ -14,5 +14,8 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v2.9.0
         with:
           configuration: "configuration.json"
+          ignorePreReleases: "true"
+          toTag: "RL-1.2.0"
+          token: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
