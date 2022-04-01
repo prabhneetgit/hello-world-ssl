@@ -1,3 +1,20 @@
+# Version: v-1.2.0 (04-01-2022)
+
+* [d8e61a1](https://github.com/prabhneetgit/hello-world-ssl/commit/d8e61a1aee0e49e7e37ca88eac652445400c8177): [Changelog CI] Add Changelog for Version v-1.1.0 (04-01-2022)
+* [95a7352](https://github.com/prabhneetgit/hello-world-ssl/commit/95a735241097f13b9c21069b445ebfe110e8bbdc): Release v-1.1.0 (04-01-2022) to develop branch with updated pull request changelog files
+* [7efeacb](https://github.com/prabhneetgit/hello-world-ssl/commit/7efeacbc5b489567b1af17589cf842ae234b5be9): Release RL-1.1.1 to develop branch with updated pull request changelog files
+* [8c12e7f](https://github.com/prabhneetgit/hello-world-ssl/commit/8c12e7f911d644b75391be17eb43d84b6e5202e6): Release v1.1.1 to develop branch with updated pull request changelog files
+* [df514a5](https://github.com/prabhneetgit/hello-world-ssl/commit/df514a5e6508556c0a23c73c5c6a01fac3bb3553): Commit to develop branch with updated pull request changelog files
+* [188b2aa](https://github.com/prabhneetgit/hello-world-ssl/commit/188b2aa2a9029b450203a48ab522f5a46106afc8): Commit to develop branch with updated pull request changelog files
+* [439a3d7](https://github.com/prabhneetgit/hello-world-ssl/commit/439a3d71af0a60f5e8f26d313c0324321d58a7c4): Commit to develop branch with updated config giles
+* [4efaaa9](https://github.com/prabhneetgit/hello-world-ssl/commit/4efaaa98974aad264d07d7b9d1ab49137ccb49d1): Update changelog-ci-config.json
+* [617bf02](https://github.com/prabhneetgit/hello-world-ssl/commit/617bf02294f6b3b485ae73a2c9008ca138e1e664): Update changelog-ci-config.json
+* [1265416](https://github.com/prabhneetgit/hello-world-ssl/commit/1265416d48a95679adc6530170a5a98c06b7be21): Update changelog-pull-request.yml
+* [e6fb301](https://github.com/prabhneetgit/hello-world-ssl/commit/e6fb301421f538441424defb18fd14069e29942d): Create changelog-pull-request.yml
+* [a0232bf](https://github.com/prabhneetgit/hello-world-ssl/commit/a0232bf1035a170f554c13a19eaf61d762c3dd65): Create changelog-ci-config.json
+* [cb3a132](https://github.com/prabhneetgit/hello-world-ssl/commit/cb3a132443163cdb0beb34a42f2cd9938c757d20): Update changelog-builder.yml
+
+
 # Version: v-1.1.0 (04-01-2022)
 
 * [7efeacb](https://github.com/prabhneetgit/hello-world-ssl/commit/7efeacbc5b489567b1af17589cf842ae234b5be9): Release RL-1.1.1 to develop branch with updated pull request changelog files
