@@ -1,0 +1,101 @@
+# This workflow will build a MuleSoft project and deploy to CloudHub
+
+name: Build and Deploy hotfix
+
+on:
+  push:
+    branches:
+    - hotfix/*
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - uses: actions/checkout@v2
+    
+    - uses: actions/cache@v1
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    
+    - name: Print effective-settings (optional)
+      run: mvn help:effective-settings
+    
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml
+    
+    - name: Stamp artifact file name with commit hash
+      run: |
+        artifactName1=$(ls target/*.jar | head -1)
+        commitHash=$(git rev-parse --short "$GITHUB_SHA")
+        artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
+        mv $artifactName1 $artifactName2
+    
+    - name: Upload artifact 
+      uses: actions/upload-artifact@master
+      with:
+          name: artifacts
+          path: target/*.jar
+          
+  
+         
+  deploy-test:
+    needs: build
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    environment: Test
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Cache
+        uses: actions/cache@v1
+        with:
+    # A list of files, directories, and wildcard patterns to cache and restore
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+              ${{ runner.os }}-maven-
+              
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@master
+        with:
+        # Artifact name
+          name: artifacts
+          
+      - name: Deploy to Anypoint Platform
+        env:
+          USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
+          PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          
+        run: |
+          artifactName=$(ls *.jar | head -1)
+          mvn deploy -DmuleDeploy \
+           -Dmule.artifact=$artifactName \
+           -Ddevops.username="$USERNAME" \
+           -Ddevops.password="$PASSWORD" \
+           -DapplicationName="hello-world-ssl-test" \
+           -Dplatform.environment="Test" \
+           -Dworker.count="1" \
+           -Dworker.type="MICRO" \
+           -Dregion="ca-central-1" \
+           -Danypoint.orgid="0d9dd882-d0a4-4003-a065-7ab909813e90" \
+           -Dmule.env="Test" \
+           -Danypoint.clientId="$CLIENT_ID" \
+           -Danypoint.clientSecret="$CLIENT_SECRET" \
+           -DsecureKey="mule" \
+           -Dapp.runtime="4.3.0" \
+           -DskipTests
+ 
