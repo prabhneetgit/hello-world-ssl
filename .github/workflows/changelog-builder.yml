@@ -1,5 +1,5 @@
-name: 'CI-changelog-builder'
-on:
+# name: 'CI-changelog-builder'
+# on:
 #   push:
 #     branches:
 #     - main
@@ -7,26 +7,48 @@ on:
 #     - develop
 #     tags:
 #       - '*'
-  workflow_dispatch:
-    inputs:
-      fromTag:
-        description: 'Set fromtag Version'
-        required: true
-      toTag:
-        description: 'Set totag Version'
-        required: true
+#   workflow_dispatch:
+#     inputs:
+#       fromTag:
+#         description: 'Set fromtag Version'
+#         required: true
+#       toTag:
+#         description: 'Set totag Version'
+#         required: true
   
+# jobs:
+#   release:
+#     if: startsWith(github.ref, 'refs/tags/')
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: "Build Changelog"
+#         uses: mikepenz/release-changelog-builder-action@v2.9.0
+#         with:
+#           owner: "mikepenz"
+#           repo: "hello-world-ssl"
+#           ignorePreReleases: "false"
+#           fromTag: ${{ github.event.inputs.fromTag }}
+#           toTag: ${{ github.event.inputs.toTag }}
+#           token: ${{ secrets.PAT }
+
+name: 'CI-changelog-builder'
+on:
+  push:
+    tags:
+      - 'RL*'
+
 jobs:
   release:
-#     if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
-      - name: "Build Changelog"
+      - name: Build Changelog
+        id: github_release
         uses: mikepenz/release-changelog-builder-action@v2.9.0
         with:
-          owner: "mikepenz"
-          repo: "hello-world-ssl"
-          ignorePreReleases: "false"
-          fromTag: ${{ github.event.inputs.fromTag }}
-          toTag: ${{ github.event.inputs.toTag }}
+          configuration: "configuration.json"
+          ignorePreReleases: "true"
           token: ${{ secrets.PAT }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
