@@ -33,7 +33,7 @@ jobs:
           ignorePreReleases: "false"
 #           fromTag: ${{ github.event.inputs.fromTag }}
 #           toTag: ${{ github.event.inputs.toTag }}
-          token: ${{ secrets.PAT }
+          token: ${{ secrets.PAT }}
 
 # name: 'CI-changelog-builder'
 # on:
