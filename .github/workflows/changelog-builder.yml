@@ -1,13 +1,20 @@
 name: 'CI-changelog-builder'
 on:
-  push:
-    branches:
-    - main
-    - release
-    - develop
+#   push:
+#     branches:
+#     - main
+#     - release
+#     - develop
 #     tags:
 #       - '*'
   workflow_dispatch:
+    inputs:
+      fromTag:
+        description: 'Set fromtag Version'
+        required: true
+      toTag:
+        description: 'Set totag Version'
+        required: true
   
 jobs:
   release:
@@ -17,7 +24,9 @@ jobs:
       - name: "Build Changelog"
         uses: mikepenz/release-changelog-builder-action@v2.9.0
         with:
-          configuration: "configuration.json"
+          owner: "mikepenz"
+          repo: "hello-world-ssl"
+          ignorePreReleases: "false"
+          fromTag: ${{ github.event.inputs.fromTag }}
+          toTag: ${{ github.event.inputs.toTag }}
           token: ${{ secrets.PAT }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
