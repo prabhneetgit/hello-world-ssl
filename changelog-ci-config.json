@@ -20,6 +20,10 @@
       "title": "New Features",
       "labels": ["feature"]
     },
+	{
+      "title": "New Release features",
+      "labels": ["release"]
+    },
     {
       "title": "Documentation Updates",
       "labels": ["docs", "documentation", "doc"]
