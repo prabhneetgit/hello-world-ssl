@@ -1,5 +1,4 @@
-# This workflow will 
-a MuleSoft project and deploy to CloudHub
+# This workflow will a MuleSoft project and deploy to CloudHub
 
 name: Build and Deploy Develop Branch
 
