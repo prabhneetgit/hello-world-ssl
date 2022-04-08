@@ -17,5 +17,6 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v2.9.0
         with:
           configuration: "configuration.json"
+          token: ${{ secrets.PAT }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
