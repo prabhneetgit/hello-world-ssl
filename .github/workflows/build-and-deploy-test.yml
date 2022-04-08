@@ -43,7 +43,7 @@ jobs:
         mv $artifactName1 $artifactName2
     
     - name: Upload artifact 
-      uses: actions/upload-artifact@release
+      uses: actions/upload-artifact@master
       with:
           name: artifacts
           path: target/*.jar
@@ -69,7 +69,7 @@ jobs:
               ${{ runner.os }}-maven-
               
       - name: Download a Build Artifact
-        uses: actions/download-artifact@release
+        uses: actions/download-artifact@master
         with:
         # Artifact name
           name: artifacts
