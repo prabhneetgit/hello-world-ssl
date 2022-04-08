@@ -9,6 +9,9 @@ jobs:
   changelog:
     runs-on: ubuntu-20.04
     steps:
+      - name: Checkout develop
+        uses: actions/checkout@v2
+        
       - name: "✏️ Generate release changelog"
         uses: heinrichreimer/github-changelog-generator-action@v2.3
         with:
