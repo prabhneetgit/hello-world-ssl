@@ -43,3 +43,7 @@ jobs:
           release_version: ${{ github.event.inputs.release_version }}
           # Optional
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Add CHANGELOG.md changes
