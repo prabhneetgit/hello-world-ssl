@@ -4,8 +4,9 @@ name: Build feature branch
 
 on:  
   pull_request:
-    branches:
-      - 'feature/**'
+    types: [ opened ]
+#    branches:
+#      - 'feature/**'
   workflow_dispatch:
     
 jobs:
