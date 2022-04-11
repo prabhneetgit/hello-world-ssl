@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased](https://github.com/prabhneetgit/hello-world-ssl/tree/HEAD)
+
+[Full Changelog](https://github.com/prabhneetgit/hello-world-ssl/compare/RL-1.2.1...HEAD)
+
+**Merged pull requests:**
+
+- Feature/test 01 [\#16](https://github.com/prabhneetgit/hello-world-ssl/pull/16) ([prabhneetgit](https://github.com/prabhneetgit))
+
 ## [RL-1.2.1](https://github.com/prabhneetgit/hello-world-ssl/tree/RL-1.2.1) (2022-04-08)
 
 [Full Changelog](https://github.com/prabhneetgit/hello-world-ssl/compare/RL-1.2.0...RL-1.2.1)
