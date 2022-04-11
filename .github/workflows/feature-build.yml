@@ -12,9 +12,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/feature/*'
     steps:
     
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
     
     - uses: actions/cache@v1
       with:
