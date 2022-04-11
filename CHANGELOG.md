@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Update to the action files to trigger build based on feature branch p… [\#20](https://github.com/prabhneetgit/hello-world-ssl/pull/20) ([prabhneetgit](https://github.com/prabhneetgit))
 - Feature/test 01 [\#19](https://github.com/prabhneetgit/hello-world-ssl/pull/19) ([prabhneetgit](https://github.com/prabhneetgit))
 - Feature/test 01 [\#16](https://github.com/prabhneetgit/hello-world-ssl/pull/16) ([prabhneetgit](https://github.com/prabhneetgit))
 
