@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Feature/test 01 [\#19](https://github.com/prabhneetgit/hello-world-ssl/pull/19) ([prabhneetgit](https://github.com/prabhneetgit))
 - Feature/test 01 [\#16](https://github.com/prabhneetgit/hello-world-ssl/pull/16) ([prabhneetgit](https://github.com/prabhneetgit))
 
 ## [RL-1.2.1](https://github.com/prabhneetgit/hello-world-ssl/tree/RL-1.2.1) (2022-04-08)
