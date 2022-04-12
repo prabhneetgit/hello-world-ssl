@@ -4,7 +4,10 @@ name: Build feature branch
 
 on:  
   pull_request:
-    types: [ opened ]
+    branches:
+      - 'feature/**'
+#     types: [ opened ]
+#   push:
 #    branches:
 #      - 'feature/**'
   workflow_dispatch:
