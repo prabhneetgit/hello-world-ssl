@@ -2,14 +2,10 @@
 
 name: Build feature branch
 
-on:  
+on:
   pull_request:
     branches:
-      - 'feature/**'
-#     types: [ opened ]
-#   push:
-#    branches:
-#      - 'feature/**'
+    - 'develop'
   workflow_dispatch:
     
 jobs:
