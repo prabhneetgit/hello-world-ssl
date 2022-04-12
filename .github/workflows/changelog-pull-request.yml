@@ -1,8 +1,8 @@
 name: Changelog CI
 
 on:
-  pull_request:
-    types: [ opened ]
+#   pull_request:
+#     types: [ opened ]
 
   # Optionally you can use `workflow_dispatch` to run Changelog CI Manually
   workflow_dispatch:
@@ -33,8 +33,8 @@ jobs:
           config_file: changelog-ci-config.json
           # Optional, This will be used to configure git
           # defaults to `github-actions[bot]` if not provided.
-          committer_username: 'prabhneetgit'
-          committer_email: 'prabhneet.java@gmail.com'
+#           committer_username: 'prabhneetgit'
+#           committer_email: 'prabhneet.java@gmail.com'
           # Optional, only required when you want to run Changelog CI 
           # on an event other than `pull_request` event.
           # In this example `release_version` is fetched from `workflow_dispatch` events input.
@@ -42,7 +42,7 @@ jobs:
           # such as environment variable or from output of another action
           release_version: ${{ github.event.inputs.release_version }}
           # Optional
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
           
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
