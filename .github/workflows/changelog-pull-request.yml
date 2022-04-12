@@ -1,8 +1,8 @@
 name: Changelog CI
 
 on:
-  pull_request:
-    types: [ opened ]
+#   pull_request:
+#     types: [ opened ]
 
   # Optionally you can use `workflow_dispatch` to run Changelog CI Manually
   workflow_dispatch:
@@ -42,7 +42,7 @@ jobs:
           # such as environment variable or from output of another action
           release_version: ${{ github.event.inputs.release_version }}
           # Optional
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
           
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
