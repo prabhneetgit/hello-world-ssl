@@ -4,7 +4,8 @@ name: Build and Deploy to Test
 
 on:
   push:
-    branches: [ release ]
+    branches:
+    - 'releases/**'
 #   pull_request:
 #     branches: [ release ]
   workflow_dispatch:
