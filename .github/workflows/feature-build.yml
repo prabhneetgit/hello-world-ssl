@@ -3,12 +3,9 @@
 name: Build feature branch
 
 on:
-  push:
-    branches:
-    - 'feature/**'
   pull_request:
     branches:
-    - 'feature/**'
+    - 'develop'
   workflow_dispatch:
     
 jobs:
