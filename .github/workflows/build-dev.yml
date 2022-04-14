@@ -37,11 +37,14 @@ jobs:
       run: mvn -B package --file pom.xml
     
     - name: Stamp artifact file name with commit hash
+      id: artifact_details
       run: |
         artifactName1=$(ls target/*.jar | head -1)
+        name=$artifactName1
         commitHash=$(git rev-parse --short "$GITHUB_SHA")
         artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/-$commitHash.jar/g")
         mv $artifactName1 $artifactName2
+        echo $name $artifactName1 $artifactName2
     
     - name: Upload artifact 
       uses: actions/upload-artifact@master
@@ -78,6 +81,7 @@ jobs:
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
       run: |
+        echo "${{ steps.artifact_details.outputs.name }}"
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
          -Dmule.artifact=$artifactName \
