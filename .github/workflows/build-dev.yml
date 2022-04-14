@@ -3,8 +3,12 @@
 name: Build and Deploy Develop Branch
 
 on:
+  pull_request:
+    branches:
+    - 'develop'
   push:
-    branches: [ develop ]
+    branches:
+    - 'develop'
   workflow_dispatch:
     
 jobs:
@@ -51,10 +55,26 @@ jobs:
       with:
           name: artifacts
           path: target/*.jar
+          
+  assign:
+    runs-on: ubuntu-latest
+    steps:
+      - if: github.base_ref == 'master' # base branch name is 'master'
+        run: echo REVIEWERS=prabhneetgit >> $GITHUB_ENV
+      - if: startsWith(github.base_ref, 'develop') # base branch name starts with 'develop_'
+        run: echo REVIEWERS=prabhneetgit >> $GITHUB_ENV
+      - if: startsWith(github.event.pull_request.title, 'bug') # title starts with 'bug'
+        run: echo REVIEWERS=prabhneetgit >> $GITHUB_ENV
+      - if: contains(github.event.pull_request.body, 'enhancement') # body contains 'enhancement'
+        run: echo REVIEWERS=prabhneetgit >> $GITHUB_ENV
+      - uses: hkusu/review-assign-action@v1
+        with:
+          assignees: ${{ github.actor }}
+          reviewers: ${{ env.REVIEWERS }}
   
   deploy-dev:
     environment: Dev
-    needs: [ build ]
+    needs: [ build,assign ]
     runs-on: ubuntu-latest
     #env:
       #SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
