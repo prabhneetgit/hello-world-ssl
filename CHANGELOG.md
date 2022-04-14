@@ -1,17 +1,10 @@
-# Changelog
+# Version: v1.2.3 (04-13-2022)
 
-## [Unreleased](https://github.com/prabhneetgit/hello-world-ssl/tree/HEAD)
+* [8e98600](https://github.com/prabhneetgit/hello-world-ssl/commit/8e98600a79bb8f57cd2aa94c0aca3da059ceee49): Activity to update the changelog-ci json file to pick the right version from commit message
+* [ceb71c8](https://github.com/prabhneetgit/hello-world-ssl/commit/ceb71c860e04b26ed7ef40c77ad16f69046be455): Activity to update changelog to be triggered on push to main repo
+* [49cfd59](https://github.com/prabhneetgit/hello-world-ssl/commit/49cfd59dc86cbba797abdd6383a09504875dc713): Activity to update the changelog pull request git action yml file
 
-[Full Changelog](https://github.com/prabhneetgit/hello-world-ssl/compare/RL-1.2.2...HEAD)
 
-**Merged pull requests:**
-
-- \[Changelog CI\] Add Changelog for Version RL-1.2.2 [\#35](https://github.com/prabhneetgit/hello-world-ssl/pull/35) ([prabhneetgit](https://github.com/prabhneetgit))
-- Checking commit to feature branch to trigger maven build [\#29](https://github.com/prabhneetgit/hello-world-ssl/pull/29) ([prabhneetgit](https://github.com/prabhneetgit))
-- Update to the action files to trigger build based on feature branch p… [\#21](https://github.com/prabhneetgit/hello-world-ssl/pull/21) ([prabhneetgit](https://github.com/prabhneetgit))
-- Update to the action files to trigger build based on feature branch p… [\#20](https://github.com/prabhneetgit/hello-world-ssl/pull/20) ([prabhneetgit](https://github.com/prabhneetgit))
-- Feature/test 01 [\#19](https://github.com/prabhneetgit/hello-world-ssl/pull/19) ([prabhneetgit](https://github.com/prabhneetgit))
-- Feature/test 01 [\#16](https://github.com/prabhneetgit/hello-world-ssl/pull/16) ([prabhneetgit](https://github.com/prabhneetgit))
 
 ## [RL-1.2.2](https://github.com/prabhneetgit/hello-world-ssl/tree/RL-1.2.2) (2022-04-12)
 
