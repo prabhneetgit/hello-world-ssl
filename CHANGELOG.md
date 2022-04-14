@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Activity to add review action and changelog action [\#60](https://github.com/prabhneetgit/hello-world-ssl/pull/60) ([prabhneetgit](https://github.com/prabhneetgit))
 - Activity to add review action and changelog action [\#59](https://github.com/prabhneetgit/hello-world-ssl/pull/59) ([prabhneetgit](https://github.com/prabhneetgit))
 - Activity to add review action and changelog action [\#58](https://github.com/prabhneetgit/hello-world-ssl/pull/58) ([prabhneetgit](https://github.com/prabhneetgit))
 - Test github versions [\#57](https://github.com/prabhneetgit/hello-world-ssl/pull/57) ([prabhneetgit](https://github.com/prabhneetgit))
