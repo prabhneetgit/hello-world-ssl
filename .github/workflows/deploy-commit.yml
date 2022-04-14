@@ -7,7 +7,7 @@ on:
     inputs:
       commit_hash:
         description: 'Specify commit hash'
-        required: true:
+        required: true
     
 jobs:
   build:
