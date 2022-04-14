@@ -2,15 +2,20 @@
 
 ## [Unreleased](https://github.com/prabhneetgit/hello-world-ssl/tree/HEAD)
 
-[Full Changelog](https://github.com/prabhneetgit/hello-world-ssl/compare/RL-1.2.1...HEAD)
+[Full Changelog](https://github.com/prabhneetgit/hello-world-ssl/compare/RL-1.2.2...HEAD)
 
 **Merged pull requests:**
 
+- \[Changelog CI\] Add Changelog for Version RL-1.2.2 [\#35](https://github.com/prabhneetgit/hello-world-ssl/pull/35) ([prabhneetgit](https://github.com/prabhneetgit))
 - Checking commit to feature branch to trigger maven build [\#29](https://github.com/prabhneetgit/hello-world-ssl/pull/29) ([prabhneetgit](https://github.com/prabhneetgit))
 - Update to the action files to trigger build based on feature branch p… [\#21](https://github.com/prabhneetgit/hello-world-ssl/pull/21) ([prabhneetgit](https://github.com/prabhneetgit))
 - Update to the action files to trigger build based on feature branch p… [\#20](https://github.com/prabhneetgit/hello-world-ssl/pull/20) ([prabhneetgit](https://github.com/prabhneetgit))
 - Feature/test 01 [\#19](https://github.com/prabhneetgit/hello-world-ssl/pull/19) ([prabhneetgit](https://github.com/prabhneetgit))
 - Feature/test 01 [\#16](https://github.com/prabhneetgit/hello-world-ssl/pull/16) ([prabhneetgit](https://github.com/prabhneetgit))
+
+## [RL-1.2.2](https://github.com/prabhneetgit/hello-world-ssl/tree/RL-1.2.2) (2022-04-12)
+
+[Full Changelog](https://github.com/prabhneetgit/hello-world-ssl/compare/RL-1.2.1...RL-1.2.2)
 
 ## [RL-1.2.1](https://github.com/prabhneetgit/hello-world-ssl/tree/RL-1.2.1) (2022-04-08)
 
