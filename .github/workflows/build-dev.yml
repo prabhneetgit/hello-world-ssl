@@ -15,7 +15,6 @@ on:
     
 jobs:
   build:
-    needs: [ assign ]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/develop'
     env:
@@ -58,7 +57,7 @@ jobs:
   
   deploy-dev:
     environment: Dev
-    needs: [ build,assign ]
+    needs: [ build ]
     runs-on: ubuntu-latest
     #env:
       #SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
