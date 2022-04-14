@@ -1,3 +1,10 @@
+# Version: v1.2.3 (04-13-2022)
+
+* [8e98600](https://github.com/prabhneetgit/hello-world-ssl/commit/8e98600a79bb8f57cd2aa94c0aca3da059ceee49): Activity to update the changelog-ci json file to pick the right version from commit message
+* [ceb71c8](https://github.com/prabhneetgit/hello-world-ssl/commit/ceb71c860e04b26ed7ef40c77ad16f69046be455): Activity to update changelog to be triggered on push to main repo
+* [49cfd59](https://github.com/prabhneetgit/hello-world-ssl/commit/49cfd59dc86cbba797abdd6383a09504875dc713): Activity to update the changelog pull request git action yml file
+
+
 
 ## [RL-1.2.2](https://github.com/prabhneetgit/hello-world-ssl/tree/RL-1.2.2) (2022-04-12)
 
