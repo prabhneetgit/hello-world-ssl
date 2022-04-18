@@ -43,20 +43,18 @@ jobs:
                 "enabled": "true"
               },
               "snapshots": {
-                "enabled": "true",
+                "enabled": "true"
               }
             },
             {
               "id": "anypoint-exchange-v2",
               "name": "Anypoint Exchange",
-              "url": "https://maven.anypoint.mulesoft.com/api/v1/maven",
-              "layout": "default"
+              "url": "https://maven.anypoint.mulesoft.com/api/v1/maven"
             },
             {
               "id": "mulesoft-releases",
               "name": "Mulesoft Release repository",
-              "url": "https://repository.mulesoft.org/releases/",
-              "layout": "default"
+              "url": "https://repository.mulesoft.org/releases/"
             }
           ]
          servers: >
@@ -79,14 +77,12 @@ jobs:
             {
               "id": "insecure-repo",
               "mirrorOf": "external:https:*",
-              "url": "https://repo1.maven.org/maven2",
-              "blocked": "false"
+              "url": "https://repo1.maven.org/maven2"
             },
             {
               "id": "insecure-anypoint-repo",
               "mirrorOf": "external:https:*",
-              "url": "https://maven.anypoint.mulesoft.com/api/v3/organizations/2a7f9c92-ebd0-4ee1-b435-e2a18d237707",
-              "blocked": "false"
+              "url": "https://maven.anypoint.mulesoft.com/api/v3/organizations/2a7f9c92-ebd0-4ee1-b435-e2a18d237707"
             }
           ]
          output_file: m2/settings.xml
