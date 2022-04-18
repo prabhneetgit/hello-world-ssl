@@ -51,6 +51,7 @@ jobs:
               "name": "Anypoint Exchange",
               "url": "https://maven.anypoint.mulesoft.com/api/v1/maven",
               "layout": "default"
+            },
             {
               "id": "mulesoft-releases",
               "name": "Mulesoft Release repository",
