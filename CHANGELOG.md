@@ -6,6 +6,7 @@
 
 **Merged pull requests:**
 
+- Generate maven settings xml taks added to the workflows [\#66](https://github.com/prabhneetgit/hello-world-ssl/pull/66) ([prabhneetgit](https://github.com/prabhneetgit))
 - Generate maven settings xml taks added to the workflows [\#65](https://github.com/prabhneetgit/hello-world-ssl/pull/65) ([prabhneetgit](https://github.com/prabhneetgit))
 - Generate maven settings xml taks added to the workflows [\#64](https://github.com/prabhneetgit/hello-world-ssl/pull/64) ([prabhneetgit](https://github.com/prabhneetgit))
 - Feature/test 003 [\#63](https://github.com/prabhneetgit/hello-world-ssl/pull/63) ([prabhneetgit](https://github.com/prabhneetgit))
