@@ -1,0 +1,95 @@
+name: Generate Maven Settings file
+
+# on:
+#   pull_request:
+#     types: [ opened ]
+
+#on:
+#  pull_request:
+#    branches:
+#    - main
+
+  # Optionally you can use `workflow_dispatch` to run Changelog CI Manually
+#  workflow_dispatch:
+#    inputs:
+#      release_version:
+#        description: 'Set Release Version'
+#        required: true
+
+on:
+#  pull_request:
+#    branches:
+#    - 'main'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository
+      - uses: actions/checkout@v2
+
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v20
+        with:
+         repositories: >
+          [
+            {
+              "id": "MuleRepository",
+              "name": "MuleRepository",
+              "url": "https://repository.mulesoft.org/nexus-ee/content/repositories/releases-ee/",
+              "releases": {
+                "enabled": "true"
+              },
+              "snapshots": {
+                "enabled": "true",
+              }
+            },
+            {
+              "id": "anypoint-exchange-v2",
+              "name": "Anypoint Exchange",
+              "url": "https://maven.anypoint.mulesoft.com/api/v1/maven",
+              "layout": "default"
+            {
+              "id": "mulesoft-releases",
+              "name": "Mulesoft Release repository",
+              "url": "https://repository.mulesoft.org/releases/",
+              "layout": "default"
+            }
+          ]
+         servers: >
+          [
+            {
+              "id": "anypoint-exchange-v2",
+              "username": "~~~Client~~~",
+              "password": "ad52072ab82e4e1fb03882113e6efb4e~?~C5f435b4AfE04c9F96e6600eeceD73b5",
+              "configuration": {
+                "httpConfiguration": {
+                  "all": {
+                    "usePreemptive": "true"
+                  }
+                }
+              }
+            }
+          ]
+         mirrors: >
+          [
+            {
+              "id": "insecure-repo",
+              "mirrorOf": "external:https:*",
+              "url": "https://repo1.maven.org/maven2",
+              "blocked": "false"
+            },
+            {
+              "id": "insecure-anypoint-repo",
+              "mirrorOf": "external:https:*",
+              "url": "https://maven.anypoint.mulesoft.com/api/v3/organizations/2a7f9c92-ebd0-4ee1-b435-e2a18d237707",
+              "blocked": "false"
+            }
+          ]
+         output_file: ${{GITHUB_WORKSPACE}}/settings.xml
+          
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Add CHANGELOG.md changes
