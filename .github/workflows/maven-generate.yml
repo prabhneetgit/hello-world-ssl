@@ -86,6 +86,10 @@ jobs:
             }
           ]
          output_file: m2/settings.xml
+         
+      - name: Display settings xml
+        run: |
+          cat ${GITHUB_WORKSPACE}/m2/settings.xml
           
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
